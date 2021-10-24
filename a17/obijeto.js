@@ -1,9 +1,30 @@
-let amigo = {
-nome: 'jose',
-sexo: 'm',
-peso: 85.4,
-engordar(p=0){
-    console.log('engordou')
-    this.peso += p
-}}
-console.log(`${amigo.nome} pesa ${amigo.peso}kg`)
+
+let res =document.querySelector('div#res')
+
+
+
+
+let pessoa = {
+        nome: 'jonata',
+        idade: 35,
+        feliz: true,
+        pets: ["cachorro","gato"],
+        carros: {
+            camaro:{
+                placa: "123456",
+                cor:"verde"
+            },
+            uno: {
+                placa:"987654",
+                cor:"branco"
+            }
+        },
+        andar: function(km){
+            res.innerHTML=(pessoa.nome+ " andou "+km+" km")
+        }
+    }
+
+
+    pessoa.andar(50)
+
+
