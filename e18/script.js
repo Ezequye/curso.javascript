@@ -3,14 +3,18 @@ class produto {
     constructor() {
         this.id=1;
         this.arrayProdutos = [];
-        
+        this.editID = null;
     }
 
     salvar() {
         let produto = this.lerDados();
 
         if (this.validaCampos(produto)) {
-            this.adicionar(produto);
+            if(this.editID == null){
+               this.adicionar(produto); 
+            } else{
+                this.atualizar(this.editID, produto); 
+            }  
         }
 
         this.listaTabela();
@@ -37,6 +41,7 @@ class produto {
             
             let imgEdit = document.createElement('img');
             imgEdit.src = "img/edit.png";
+            imgEdit.setAttribute("onclick", "produtos.preparaEdicao("+JSON.stringify(this.arrayProdutos[i])+")");
 
             let imgDelete = document.createElement('img');
             imgDelete.src = "img/delete.png";
@@ -45,14 +50,31 @@ class produto {
             td_acoes.appendChild(imgEdit);
             td_acoes.appendChild(imgDelete);
         }
-
             console.log(this.arrayProdutos);
-
         }
 
     adicionar(produto){
+        produto.preco = parseFloat(produto.preco)
         this.arrayProdutos.push(produto);
         this.id++;
+    }
+
+    atualizar(id, produto){
+        for(let i =0; i < this.arrayProdutos.length; i++){
+            if(this.arrayProdutos[i].id == id){
+                this.arrayProdutos[i].nomeproduto = produto.nomeproduto;
+                this.arrayProdutos[i].preco = produto.preco;
+            }
+        }
+    }
+
+    preparaEdicao(dados){
+        this.editID = dados.id;
+
+        document.getElementById('produto').value =dados.nomeproduto;
+        document.getElementById('preco').value =dados.preco;
+
+        document.getElementById('btn1').innerText ='Atualizar';
     }
 
     lerDados(){
@@ -87,19 +109,24 @@ class produto {
     cancelar(){
         document.getElementById('produto').value = '';
         document.getElementById('preco').value = '';
+
+        document.getElementById('btn1').innerText ='Salvar';
+        this.editID = null;
     }
 
     deletar(id){
-        let tbody = document.getElementById('tbody');
 
-        for (let i = 0; i < this.arrayProdutos.length; i++){
-            if (this.arrayProdutos[i].id == id) {
-                this.arrayProdutos.splice(i, 1);
-                tbody.deleteRow(i);
+        if(confirm('Deseja deletar o produto do ID '+id)){
+            let tbody = document.getElementById('tbody');
 
+            for (let i = 0; i < this.arrayProdutos.     length; i++){
+                if (this.arrayProdutos[i].id == id) {
+                    this.arrayProdutos.splice(i, 1);
+                    tbody.deleteRow(i);
+                }
             }
+            console.log(this.arrayProdutos);   
         }
-        console.log(this.arrayProdutos);
     }
 }
 var produtos = new produto();
